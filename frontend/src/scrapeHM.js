@@ -1,0 +1,3 @@
+var nodesObj = document.querySelectorAll('.product-item');var nodesList = Object.keys(nodesObj).map( key => nodesObj[key]);var objectMap = nodesList.map( node =>{  return { dressType : node.querySelector('.link').text
+, price : node.querySelector('.item-price').children[0].textContent
+, arrival : node.querySelector('.new-product') !== null ? 'new' : 'old', image : node.querySelector('.item-image').dataset.src.substring(2)}}); var jsonString = JSON.stringify(objectMap); console.log(jsonString);
