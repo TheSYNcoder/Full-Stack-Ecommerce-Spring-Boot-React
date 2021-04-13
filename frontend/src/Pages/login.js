@@ -1,7 +1,11 @@
 import React from 'react';
 import { Paper, withStyles, Grid, TextField, Button, FormControlLabel, Checkbox, Typography } from '@material-ui/core';
 import { Face, Fingerprint } from '@material-ui/icons'
+import { withRouter } from 'react-router';
+import AuthContext from "../context";
 const axios = require('axios');
+
+
 
 const styles = theme => ({
     margin: {
@@ -23,6 +27,11 @@ const styles = theme => ({
 
 
 function LoginTab(props) {
+
+
+        const LOGIN_URI  = '/api/login';
+
+        const  { auth , setAuth } = React.useContext(AuthContext);
     
         const [state,setState] = 
          React.useState({            
@@ -38,21 +47,25 @@ function LoginTab(props) {
 
         const handleSubmit = () => {
             const params = new URLSearchParams();
-            params.add('username', state.email.value);
-            params.add('password' , state.password.value);
+            params.append('username', state.email.value);
+            params.append('password' , state.password.value);
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
-            }
+            }            
 
-            // axios.post( url , params , config)
-            //     .then( (result) => {
-
-            //     })
-            //     .catch( (err) => {
-
-            //     });
+            axios.post( LOGIN_URI , params , config)
+                .then( (response) => {
+                    
+                    if ( response.status === 200 ){
+                        setAuth(true);
+                        props.history.push('/');
+                    }
+                })
+                .catch( (err) => {
+                    console.log(err);
+                });
         }
 
         const handleChange = (e) => {
@@ -87,7 +100,7 @@ function LoginTab(props) {
                             <Fingerprint />
                         </Grid>
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField id="username" label="Password" type="password" name="password" state={state.password.value} onChange={handleChange} fullWidth required />
+                            <TextField id="password" label="Password" type="password" name="password" state={state.password.value} onChange={handleChange} fullWidth required />
                         </Grid>
                     </Grid>
                     {/* <Grid container alignItems="center" justify="space-between">
@@ -103,7 +116,8 @@ function LoginTab(props) {
                         </Grid>
                     </Grid> */}
                     <Grid container justify="center" style={{ marginTop: '40px' }}>
-                        <Button variant="outlined" color="primary" style={{ textTransform: "none" }}>Login</Button>
+                        <Button variant="outlined" color="primary" onClick={handleSubmit}
+                        style={{ textTransform: "none" }}>Login</Button>
                     </Grid>
                 </div>
             </Paper>
@@ -112,4 +126,4 @@ function LoginTab(props) {
     }
 
 
-export default withStyles(styles)(LoginTab);
+export default withRouter(withStyles(styles)(LoginTab));

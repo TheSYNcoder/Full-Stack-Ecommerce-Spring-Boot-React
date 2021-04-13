@@ -4,6 +4,8 @@ package com.flamup.spring.Controllers;
 import com.flamup.spring.Models.RegistrationRequest;
 import com.flamup.spring.Services.RegistrationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +19,8 @@ public class RegistrationController {
     private RegistrationService registrationService;
 
     @PostMapping
-    public String register(@RequestBody RegistrationRequest request ){
-        return registrationService.register(request);
+    public ResponseEntity<String> register(@RequestBody RegistrationRequest request ){
+        return  new ResponseEntity<String>(registrationService.register(request),HttpStatus.OK);
     }
 
 }

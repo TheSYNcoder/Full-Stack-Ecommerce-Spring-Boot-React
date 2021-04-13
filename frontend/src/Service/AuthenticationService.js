@@ -1,10 +1,23 @@
 
+const axios = require('axios');
 
-const checkIfAuthenticated = () => {
+const checkIfAuthenticated = (setUser, setAuth) => {
     // make an axios call
-    return true;
+    
+        axios.get('/api/auth').then( response => {
+            console.log(response);
+            if ( response.data.AUTHENTICATED === true){                
+                setAuth(true);
+                setUser(response.data.USER);
+            }
+            else{
+               setAuth(false);
+               setUser(null);
+            }
+        })
+        .catch( err => console.log(err));
+    
+    
 }
 
-module.exports ={
-    auth : checkIfAuthenticated
-}
+export default checkIfAuthenticated;

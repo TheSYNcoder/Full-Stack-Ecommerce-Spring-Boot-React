@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  data-postgres:
+    image: "postgres:13.2-alpine"
+    container_name: data-postgres
+
+    volumes:
+      - flamup-data:var/lib/postgres/data
+
+
+
+    ports:
+      - 5432:5432
+
+    environment:
+      - POSTGRES_DB=flamup
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+
+  flamup:
+    build: .
+    container_name: flamup
+    environment:
+      - DB_SERVER=data-postgres
+      - POSTGRES_DB=flamup
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 8080:8080 # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    links:
+      - data-postgres
+
+volumes:
+  flamup-data:
+
+
+

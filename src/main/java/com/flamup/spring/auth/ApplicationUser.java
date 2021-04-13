@@ -86,6 +86,9 @@ public class ApplicationUser implements UserDetails {
     }
 
 
+    public String getEmail() { return username; }
+
+    public void setEmail(String email) { this.email = email; }
 
 
 
@@ -125,6 +128,14 @@ public class ApplicationUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setPassword( String password){
+        this.password = password;
+    }
+
+    public void setUsername( String username ){
+        this.username = username;
     }
 
 

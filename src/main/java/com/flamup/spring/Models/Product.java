@@ -23,6 +23,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     sex sex;
     String dresstype;
+    String image;
     String price;
     String arrival;
     int discount;

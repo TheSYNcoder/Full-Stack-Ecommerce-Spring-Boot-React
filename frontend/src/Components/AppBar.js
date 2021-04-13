@@ -12,11 +12,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
-import { ShoppingCart } from '@material-ui/icons';
+import { ShoppingCart, Input } from '@material-ui/icons';
 import MoreIcon from '@material-ui/icons/MoreVert';
-
+import AuthContext from "../context";
 import Logof from "../assets/logof.png";
 import { withRouter } from 'react-router';
+
+
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -84,6 +87,8 @@ const useStyles = makeStyles((theme) => ({
 
 function PrimarySearchAppBar(props) {
     const classes = useStyles();
+
+    const { auth, setAuth } = React.useContext( AuthContext );
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -136,8 +141,9 @@ function PrimarySearchAppBar(props) {
         >
             
             <MenuItem>
-                <IconButton aria-label="show 11 new notifications" color="inherit">
-                    <Badge badgeContent={11} color="secondary">
+                <IconButton onClick={() => props.history.push('/cart')}
+                aria-label="show 11 new notifications" color="inherit" >
+                    <Badge badgeContent={props.shop} color="secondary">
                         <ShoppingCart />
                     </Badge>
                 </IconButton>
@@ -157,6 +163,10 @@ function PrimarySearchAppBar(props) {
         </Menu>
     );
 
+
+
+    
+
     return (
         <div className={classes.grow}>
             <AppBar position="static" color="secondary">
@@ -172,7 +182,7 @@ function PrimarySearchAppBar(props) {
                     </IconButton>
                     <Typography className={classes.title} variant="h6" noWrap>
                         FlamUp
-          </Typography>
+                    </Typography>
                     {/* <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon />
@@ -189,8 +199,9 @@ function PrimarySearchAppBar(props) {
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         
-                        <IconButton color="inherit">
-                            <Badge badgeContent={2}>
+                        <IconButton onClick={() => props.history.push('/cart')}
+                        color="inherit">
+                            <Badge badgeContent={props.shop}>
                                 <ShoppingCart />
                             </Badge>
                         </IconButton>

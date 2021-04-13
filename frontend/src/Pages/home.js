@@ -9,6 +9,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
+import AuthContext from "../context";
+import {Input } from '@material-ui/icons';
+import axios from 'axios';
 
 
 const useStyles = makeStyles( (theme) => ({
@@ -27,10 +30,25 @@ const useStyles = makeStyles( (theme) => ({
 }))
 
 const Home = (props) => {
+
+    const { auth , setAuth ,user } = React.useContext(AuthContext);
     const classes = useStyles();
     const lstate = props.history.location.state;
     const cond = props.history.location.state !== undefined && props.history.location.state.message !== undefined
     const [open, setOpen] = React.useState(cond);
+
+    const handleLogout = () => {
+        axios.get('/api/logout')
+            .then(response => {
+                if (response.status === 200) {
+                    setAuth(false);
+                    props.history.push('/')
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+    }
+
     return (
         <div>
             <Container>
@@ -67,6 +85,20 @@ const Home = (props) => {
                             </Link>
                         </Grid>
                     </Grid>
+                    { auth && user !== null ? 
+                     <Grid className={classes.end}>
+                        <Grid item style={{padding:"2em"}}>
+                            
+                            <Typography variant="h5"  color="textSecondary">Welcome {user.email}</Typography>
+                            
+                        </Grid>
+                        <Grid item style={{padding:"2em"}}>
+                            
+                            <Typography variant="h5"  onClick={handleLogout}
+                            color="textSecondary" gutterBottom >Logout</Typography>
+                            
+                        </Grid>
+                    </Grid> :
                     <Grid className={classes.end}>
                         <Grid item style={{padding:"2em"}}>
                             <Link to="/register">
@@ -79,6 +111,7 @@ const Home = (props) => {
                             </Link>
                         </Grid>
                     </Grid>
+                    }
                 </Grid>
                 <Grid container justify="space-around" alignItems="center" direction="column" >
                     

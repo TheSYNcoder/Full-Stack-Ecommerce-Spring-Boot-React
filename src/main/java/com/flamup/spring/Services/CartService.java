@@ -1,6 +1,7 @@
 package com.flamup.spring.Services;
 
 import com.flamup.spring.DTO.OrderDTO;
+import com.flamup.spring.DTO.UpdateOrderDTO;
 import com.flamup.spring.Models.OrderItem;
 import com.flamup.spring.Models.Product;
 import com.flamup.spring.Models.ShoppingCart;
@@ -104,11 +105,11 @@ public class CartService {
 
 
 
-    public String updateOrder( String id, int quantity){
-        OrderItem item = orderRepository.findById(id)
+    public String updateOrder(UpdateOrderDTO updateOrderDTO){
+        OrderItem item = orderRepository.findById(updateOrderDTO.getId())
                 .orElseThrow(()->new IllegalStateException("order does not exist"));
 
-        item.setQuantity(quantity);
+        item.setQuantity(updateOrderDTO.getQuantity());
         orderRepository.save(item);
         return "SUCCESS";
     }

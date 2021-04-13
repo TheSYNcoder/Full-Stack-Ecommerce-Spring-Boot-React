@@ -2,10 +2,16 @@ import React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Appbar from "../Components/AppBar";
 
-import { Typography , Grid, Button, TextField } from "@material-ui/core";
+import { Typography , Grid, Button, TextField , IconButton} from "@material-ui/core";
 import data from "../data";
 import DressCard from "../Components/DressShow";
 import { Search } from "@material-ui/icons";
+import axios from 'axios';
+import AuthContext from "../context";
+import { withRouter } from 'react-router';
+import { Favorite, ShoppingCart } from '@material-ui/icons';
+import Modal from '@material-ui/core/Modal';
+
 
 const useStyles = makeStyles( (theme) => ({
     heading:{
@@ -25,6 +31,17 @@ const useStyles = makeStyles( (theme) => ({
         backgroundColor :"rgb(255,0,0,0.2)",
         borderRadius :"50px",
         margin:"0.5em"
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    mimage: {
+        height: "300px",
+        width: "250px",
+        borderRadius: "40px",
+
     }
 }))
 
@@ -33,29 +50,48 @@ const Products = () => {
 
 
     const classes = useStyles();
+
+    const { user, auth } = React.useContext(AuthContext);
+
+    const [PRODUCTS_BY_SEX_PAGINATION_URL, setURL] = React.useState(`/api/v1/clothes/?sex=${user.gender}&page=`);
+    const PRODUCTS_BY_SEARCH_URL = '/api/v1/dresses/?dress=';
+    const ORDER_URL = '/api/v1/orders'
     
-    let posts = data.data;
-    const [next, setNext] = React.useState(10);
-    const [postsToShow, setPostsToShow] = React.useState([]);
+    const [ posts,  setPosts ] = React.useState([]);
+  
 
 
-    const [total, setTotal] = React.useState( posts.length);
-    const postsPerPage = 10;
-    const loopWithSlice = (start, end) => {
-        const slicedPosts = posts.slice(start, end);
-        let arrayForHoldingPosts = [...postsToShow, ...slicedPosts];
-        setPostsToShow(arrayForHoldingPosts);
-    };
+    const [total, setTotal] = React.useState( 0);
+    const [current, setCurrent ] = React.useState(0);
+    const [products, setProducts ] = React.useState([]);
+    
 
     React.useEffect(() => {
-        if ( postsToShow.length === 0){
-            loopWithSlice(0, postsPerPage);
-        }
+        axios.get(PRODUCTS_BY_SEX_PAGINATION_URL+current )
+            .then( response => {
+                console.log(response);
+                setCurrent( current + 1 );
+                setTotal( response.data.total);
+                setPosts(response.data.products);
+            })
+            .catch(err => console.log(err));      
+            
+        axios.get(ORDER_URL)
+            .then(response => {
+                if (response.status === 200) {                    
+                    setProducts(response.data.products);
+                }
+            })
+            .catch(err => console.log(err));
     }, []);
 
     const handleShowMorePosts = () => {
-        loopWithSlice(next, next + postsPerPage);
-        setNext(next + postsPerPage);
+        axios.get(PRODUCTS_BY_SEX_PAGINATION_URL + current)
+            .then( response => {
+                setCurrent( current + 1 );
+                setTotal( response.data.total);                
+                setPosts([...posts, ...response.data.products]);
+            })
     };
 
 
@@ -67,15 +103,128 @@ const Products = () => {
 
     const handleKeyDown =(e) => {
         if ( e.keyCode === 13){
-            // call the api man
+            
+            axios.get(PRODUCTS_BY_SEARCH_URL + search)
+                .then( response => {
+                    setPosts(response.data.products);
+                    setTotal(response.data.length);
+                    setCurrent(response.data.length);
+                })
+                .catch(err => console.log(err));
+            
         }
     }
 
 
     const getDressesBySex = (sex) => {
-        console.log(sex);
+        const PRODUCTS_BY_SEX = `/api/v1/clothes/?sex=${sex}&page=`;
+        
+        axios.get(PRODUCTS_BY_SEX_PAGINATION_URL + 0)
+            .then(response => {
+                console.log(response);
+                setCurrent(1);
+                setURL(PRODUCTS_BY_SEX);
+                setTotal(response.data.total);
+                setPosts(response.data.products);
+            })
+            .catch(err => console.log(err));
+
     }
+
+
+
+
+    // Modal things
+
+    const SESSION_PERSIST_URL = 'api/persist/?msg='
+    const ADD_TO_CART_URL = 'api/v1/add';
+
+
+    const [open, setOpen] = React.useState(false);
+    const [dress, setDress ] = React.useState(null);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+
+
+    const AddtoCart = () => {
+        var payload = {
+            productId: dress.id,
+            quantity: 1,
+        }
+
+        axios.post(ADD_TO_CART_URL, payload)
+            .then(response => {
+                if (response.status === 200) {
+                    alert('Added to cart!');
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+
+    const handlePersist = () => {
+        var msg = dress.arrival.toLowerCase() === 'old' ? "O" : "N";
+        axios.get(SESSION_PERSIST_URL + msg)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(err => console.log(err));
+    }
+
+    const body = () => 
+    <Grid container alignItems="center" style={{backgroundColor:"white"}}
+    justify="center" 
+    direction="column" >
+        <Grid item >
+            <img src={`https://${dress.image}`} className={classes.mimage} />
+        </Grid>
+        <Grid item>
+            <Typography variant="h4">{dress.dresstype}</Typography>
+        </Grid>
+        <Grid item>
+            <Typography variant="h4">{dress.dresstypeype}</Typography>
+        </Grid>
+        {
+            dress.arrival.toLowerCase() === "old" ?
+                <Grid item>
+                    <Typography variant="h5">Price :
+                            <span style={{ textDecoration: "line-through" }}>
+                            ₹ {dress.price}</span>
+                        {' '} <span style={{ color: "red" }}>{dress.discount}</span></Typography>
+                </Grid>
+                : <Grid>₹ {dress.price}</Grid>
+        }
+        <Grid container spacing={2}>
+            <Grid item>
+                <IconButton onClick={AddtoCart}>
+                    <ShoppingCart />
+                </IconButton>
+            </Grid>
+            <Grid item>
+                <IconButton onClick={handlePersist}>
+                    < Favorite color="secondary" />
+                </IconButton>
+            </Grid>
+        </Grid>
+    </Grid>
     
+
+    // Modal things end
+    
+
+    const handleClick =(i) => {
+        
+        setDress(posts[i]);
+        
+        setOpen(true);
+    }
     
 
 
@@ -84,13 +233,13 @@ const Products = () => {
         for ( let i = 0; i < posts.length ; i+=2 ){
             if ( i !== posts.length -1 ){
                 arr.push(
-                    <Grid container justify="center" spacing={2} key={i}>
-                            <Grid xs={12} sm={4} item>
+                    <Grid container justify="center" spacing={2}>
+                            <Grid xs={12} sm={4} item onClick={() => handleClick(i)}>
                                 {/* <img src={`https://${posts[i].image}`} /> */}
                                 <DressCard dress={posts[i]} />
                                 
                             </Grid>
-                            <Grid xs={12} sm={4} item>
+                            <Grid xs={12} sm={4} item onClick={() => handleClick(i+1)}>
                                 {/* <img src={`https://${posts[i+1].image}`} /> */}
                                 <DressCard dress={posts[i+1]} />
                             </Grid>                        
@@ -99,8 +248,8 @@ const Products = () => {
             }
             else{
                 arr.push(
-                    <Grid container justify="center" key={i}>
-                        <Grid xs={12} sm={4} item>
+                    <Grid container justify="center" >
+                        <Grid xs={12} sm={4} item onClick={() => handleClick(i)}>
                             <DressCard dress={posts[i]} />
                         </Grid>
                     </Grid>
@@ -112,7 +261,7 @@ const Products = () => {
 
     return (
         <div>
-            <Appbar/>
+            <Appbar shop={products.length}/>            
             <Grid container justify="center" alignItems="center" style={{marginTop:"1.5em", marginBottom:"1.5em"}}>
                 <Grid item>
                     <Search />
@@ -124,6 +273,7 @@ const Products = () => {
                     placeholder="Enter any dress type like denim .."fullWidth autoFocus />
                 </Grid>
             </Grid>
+            
             <Grid container >
                 <Grid xs={12} sm={3} container item> 
                     <Grid container justify="flex-start" alignItems="center" direction="column" >
@@ -143,23 +293,34 @@ const Products = () => {
                 </Grid>
                 <Grid container item xs={12} sm={9} >
                     
-                    {renderDresses(postsToShow)}
-                    <Grid container item justify="center">
-                        {
-                            postsToShow.length !== total ? 
-                             <Button variant="outlined" color="primary" onClick={handleShowMorePosts}> Load more</Button>
-                             : <Typography variant="h4">No more dresses to show .</Typography>
-                        }
-                    </Grid>
-                    
+                    {renderDresses(posts)}                
+                        <Grid container item justify="center" onClick={() => handleOpen(true)}>
+                            {
+                                current !== total ? 
+                                <Button variant="outlined" color="primary" onClick={handleShowMorePosts}> Load more</Button>
+                                : <Typography variant="h4">No more dresses to show .</Typography>
+                            }
+                        </Grid>
+                                                                                  
                 </Grid>
 
             </Grid>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+                className={classes.modal}
+            >
+                <div>
+                     {dress !== null ? body() : <div></div>}                     
+                </div>
+            </Modal>
         </div>
     )
 
 }
 
 
-export default Products;
+export default withRouter(Products);
 

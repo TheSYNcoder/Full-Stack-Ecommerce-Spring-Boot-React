@@ -2,7 +2,8 @@ import React from 'react';
 import { Paper, withStyles, Grid, TextField, Button, FormControlLabel, FormControl, FormLabel, RadioGroup,Radio, Checkbox, Typography } from '@material-ui/core';
 import Logo from "../assets/logo.png";
 import { Face, Fingerprint, AccountCircle, Email } from '@material-ui/icons'
-
+import { withRouter } from 'react-router';
+import axios from 'axios';
 
 
 const styles = theme => ({
@@ -22,6 +23,8 @@ const styles = theme => ({
 
 function Register(props) {
 
+
+    const REGISTER_URI = '/api/register';
 
     const [state,setState] =  React.useState({
         firstname :{
@@ -55,6 +58,26 @@ function Register(props) {
     const handleChange = (e) => {
         setState({ ...state, [e.target.name] : { value : e.target.value, error : null }})
        
+    }
+
+
+    const handleSubmit = () => {
+        const payload = {
+            firstName  : state.firstname.value, 
+            lastName  :state.lastname.value, 
+            userName : state.username.value,
+            password : state.password.value, 
+            email : state.email.value, 
+            gender : state.gender.value             
+        }
+
+        axios.post( REGISTER_URI, payload)
+            .then( response => {
+                console.log(response);
+                if ( response.status === 200 ){
+                    props.history.push('/login');
+                }
+            }).catch( err => console.log(err));
     }
 
 
@@ -102,7 +125,7 @@ function Register(props) {
                             <Email />
                         </Grid>
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField id="username" label="Email" type="email" name="email" onChange={handleChange} value={state.email.value} fullWidth autoFocus required />
+                            <TextField id="email" label="Email" type="email" name="email" onChange={handleChange} value={state.email.value} fullWidth autoFocus required />
                         </Grid>
                         
                     </Grid>
@@ -126,7 +149,8 @@ function Register(props) {
                     </Grid>
                    
                     <Grid container justify="center" style={{ marginTop: '40px' }}>
-                        <Button variant="outlined" color="primary" style={{ textTransform: "none" }}>Sign Up</Button>
+                        <Button variant="outlined" color="primary" onClick={handleSubmit}
+                        style={{ textTransform: "none" }}>Sign Up</Button>
                     </Grid>
                 </div>
             </Paper>
@@ -135,4 +159,4 @@ function Register(props) {
 }
 
 
-export default withStyles(styles)(Register);
+export default withRouter(withStyles(styles)(Register));

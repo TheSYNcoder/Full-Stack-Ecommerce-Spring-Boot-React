@@ -1,15 +1,4 @@
--- create table if not exists clothes
--- (
--- 	id int not null
--- 		constraint clothes_pk
--- 			primary key,
--- 	sex varchar,
--- 	dresstype varchar not null,
--- 	image varchar not null,
--- 	price varchar not null,
--- 	arrival varchar,
--- 	discount varchar not null
--- );
+
 --
 --
 
@@ -28,6 +17,19 @@ create table if not exists application_user (
       password varchar(255),
       username varchar(255),
       primary key (id)
+);
+
+create table if not exists clothes
+(
+    id int not null
+        constraint clothes_pk
+            primary key,
+    sex varchar,
+    dresstype varchar not null,
+    image varchar not null,
+    price varchar not null,
+    arrival varchar,
+    discount varchar not null
 );
 
 create sequence student_sequence start 1 increment 1;

@@ -1,6 +1,7 @@
 package com.flamup.spring.Controllers;
 
 import com.flamup.spring.DTO.OrderDTO;
+import com.flamup.spring.DTO.UpdateOrderDTO;
 import com.flamup.spring.Services.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,9 +28,9 @@ public class CartServiceController {
         return new ResponseEntity<>(cartService.getProducts(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "order/{id}")
-    public ResponseEntity<String> updateOrder(@PathVariable String id, @RequestBody Integer quantity){
-        return new ResponseEntity<>(cartService.updateOrder(id,quantity ), HttpStatus.CREATED);
+    @PutMapping(path = "order")
+    public ResponseEntity<String> updateOrder(@RequestBody UpdateOrderDTO updateOrderDTO){
+        return new ResponseEntity<>(cartService.updateOrder( updateOrderDTO ), HttpStatus.CREATED);
     }
 
     @DeleteMapping( path = "order/{id}")

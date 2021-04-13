@@ -40,18 +40,15 @@ public class ProductController {
             @RequestParam(defaultValue = "0") Integer page,
             HttpServletRequest request){
 
-
         List<String> messages = (List<String>) request.getSession().getAttribute("SESSION_STORE");
 
         if ( messages == null){
             messages = new ArrayList<>();
         }
 
-
         Map<Boolean, Long> countBySex = messages.stream().collect(
                 Collectors.partitioningBy(
                         (String msg) -> (msg.equals("O")), Collectors.counting() ));
-
 
         return productService.getProductsBySex(sex,  items, page, countBySex);
 
