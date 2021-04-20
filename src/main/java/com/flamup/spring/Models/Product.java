@@ -6,10 +6,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "clothes")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class Product {
 
@@ -21,12 +21,19 @@ public class Product {
     @Id
     Long id;
     @Enumerated(EnumType.STRING)
-    sex sex;
-    String dresstype;
-    String image;
-    String price;
-    String arrival;
-    int discount;
+
+    @Column(name = "sex")
+    sex a_sex;
+    @Column(name = "dresstype")
+    String b_dresstype;
+    @Column(name = "image")
+    String c_image;
+    @Column(name = "price")
+    String d_price;
+    @Column(name = "arrival")
+    String e_arrival;
+    @Column(name = "discount")
+    int f_discount;
 
 
 }

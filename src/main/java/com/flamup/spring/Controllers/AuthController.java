@@ -2,12 +2,11 @@ package com.flamup.spring.Controllers;
 
 
 import com.flamup.spring.auth.AppUserService;
-import com.flamup.spring.auth.ApplicationUser;
+import com.flamup.spring.Models.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

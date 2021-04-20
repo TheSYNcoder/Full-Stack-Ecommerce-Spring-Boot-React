@@ -2,39 +2,48 @@ version: '3'
 
 services:
 
-  data-postgres:
-    image: "postgres:13.2-alpine"
-    container_name: data-postgres
-
-    volumes:
-      - flamup-data:var/lib/postgres/data
-
-
+  db:
+    image: "postgres:9.6-alpine"
+    container_name: db
+    restart: always
 
     ports:
       - 5432:5432
+
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
 
     environment:
       - POSTGRES_DB=flamup
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
 
 
   flamup:
-    build: .
+    build: ./
+    image: "thesyncoder/flamup:0.0.1"
     container_name: flamup
     environment:
-      - DB_SERVER=data-postgres
+      - DB_SERVER:db
       - POSTGRES_DB=flamup
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
       - 8080:8080 # Forward the exposed port 8080 on the container to port 8080 on the host machine
-    links:
-      - data-postgres
+
+    depends_on:
+      - db
+
+
 
 volumes:
-  flamup-data:
+  postgres_data:
+
+
+
+
+
 
 
 

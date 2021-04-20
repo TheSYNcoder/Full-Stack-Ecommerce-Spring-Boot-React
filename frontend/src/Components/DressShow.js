@@ -30,26 +30,26 @@ const DressCard = ({dress}) => {
         <Paper outlined elevation={10} className={classes.paper} >
             <Grid container alignItems="center" direction="column">
                 <Grid item container justify="center">
-                    <img src={`https://${dress.image}`} className={classes.image} />
+                    <img src={`https://${dress.c_image}`} className={classes.image} />
                 </Grid>
                 <Grid item >
-                    <Typography variant="subtitle1" color="textSecondary">{dress.dresstype}</Typography>
+                    <Typography variant="subtitle1" color="textSecondary">{dress.b_dresstype}</Typography>
                 </Grid>
-                {dress.arrival.toLowerCase() === "new" ?
+                {dress.e_arrival.toLowerCase() === "new" ?
                     <Grid item>
                         <Typography variant="h5" color="primary">New Arrival</Typography>
                     </Grid>
                     : <Grid></Grid>
                 }
                 {
-                    dress.arrival.toLowerCase() === "old" ?
+                    dress.e_arrival.toLowerCase() === "old" ?
                         <Grid item>
                             <Typography variant="h5">Price : 
                             <span style={{textDecoration:"line-through"}}>
-                                    ₹ {dress.price}</span>
-                                {' '} <span style={{ color: "red" }}>{dress.discount}</span></Typography>
+                                    ₹ {dress.d_price}</span>
+                                {' '} <span style={{ color: "red" }}>{dress.f_discount}</span></Typography>
                         </Grid>
-                        : <Grid>₹ {dress.price}</Grid>
+                        : <Grid>₹ {dress.d_price}</Grid>
                 }
             </Grid>
         </Paper>            

@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 //import javax.sql.DataSource;
 
-import static com.flamup.spring.auth.AppUserRole.*;
+import static com.flamup.spring.Models.AppUserRole.*;
 
 @Configuration
 @EnableWebSecurity
@@ -38,10 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomLogoutHandler logoutHandler;
 
-
-
-
-
     @Autowired
     public WebSecurityConfig(PasswordEncoder passwordEncoder, AppUserService appUserService) {
         this.passwordEncoder = passwordEncoder;
@@ -55,23 +51,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/**")
                 .antMatchers("/swagger-ui.html")
                 .antMatchers("/webjars/**");
-
-
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
 
-
-//        auth.jdbcAuthentication().dataSource(dataSource)
-//                .usersByUsernameQuery("SELECT EMAIL AS PRINCIPAL, PASSWORD AS CREDENTIALS, true FROM APPLICATION_USER WHERE EMAIL=?")
-//                .authoritiesByUsernameQuery("SELECT EMAIL AS PRINCIPAL, APP_USER_ROLE AS ROLE FROM APPLICATION_USER WHERE EMAIL=?")
-//                .passwordEncoder(passwordEncoder).rolePrefix("ROLE_");
-
-//        auth.jdbcAuthentication().dataSource(dataSource)
     }
-
 
 
 
@@ -83,7 +69,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/","/static/**", "index*", "/css/*", "/js/*","/media/*","*.ico","*.png").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/auth").permitAll()
-//                .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/persist/**").authenticated()
 
                 .antMatchers("/api/v1/**").authenticated()
@@ -103,9 +88,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK));
-
-
-
 
     }
 

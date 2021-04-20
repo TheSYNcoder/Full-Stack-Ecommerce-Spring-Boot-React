@@ -1,7 +1,6 @@
-package com.flamup.spring.auth;
+package com.flamup.spring.Models;
 
 
-import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

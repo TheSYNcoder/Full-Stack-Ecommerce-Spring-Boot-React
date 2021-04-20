@@ -1,10 +1,9 @@
 package com.flamup.spring.Services;
 
-import com.flamup.spring.Models.LoginRequest;
 import com.flamup.spring.Models.RegistrationRequest;
-import com.flamup.spring.auth.AppUserRole;
+import com.flamup.spring.Models.AppUserRole;
 import com.flamup.spring.auth.AppUserService;
-import com.flamup.spring.auth.ApplicationUser;
+import com.flamup.spring.Models.ApplicationUser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,19 +43,5 @@ public class RegistrationService {
     }
 
 
-    public ApplicationUser login(LoginRequest request ){
-        System.out.println("Delete me line 48" + request);
-        ApplicationUser user = appUserService.loginUser( new ApplicationUser(
-                "",
-                "",
-                "",
-                request.getPassword(),
-                request.getEmail(),
-                AppUserRole.USER,
-                ApplicationUser.Gender.MALE
-        ));
-        user.setPassword("");
-        return user;
 
-    }
 }

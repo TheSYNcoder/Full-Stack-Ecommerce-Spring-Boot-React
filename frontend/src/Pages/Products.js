@@ -170,7 +170,7 @@ const Products = () => {
 
 
     const handlePersist = () => {
-        var msg = dress.arrival.toLowerCase() === 'old' ? "O" : "N";
+        var msg = dress.e_arrival.toLowerCase() === 'old' ? "O" : "N";
         axios.get(SESSION_PERSIST_URL + msg)
             .then(response => {
                 console.log(response);
@@ -183,23 +183,21 @@ const Products = () => {
     justify="center" 
     direction="column" >
         <Grid item >
-            <img src={`https://${dress.image}`} className={classes.mimage} />
+            <img src={`https://${dress.c_image}`} className={classes.mimage} />
         </Grid>
         <Grid item>
-            <Typography variant="h4">{dress.dresstype}</Typography>
+            <Typography variant="h4">{dress.b_dresstype}</Typography>
         </Grid>
-        <Grid item>
-            <Typography variant="h4">{dress.dresstypeype}</Typography>
-        </Grid>
+
         {
-            dress.arrival.toLowerCase() === "old" ?
+            dress.e_arrival.toLowerCase() === "old" ?
                 <Grid item>
                     <Typography variant="h5">Price :
                             <span style={{ textDecoration: "line-through" }}>
-                            ₹ {dress.price}</span>
-                        {' '} <span style={{ color: "red" }}>{dress.discount}</span></Typography>
+                            ₹ {dress.d_price}</span>
+                        {' '} <span style={{ color: "red" }}>{dress.f_discount}</span></Typography>
                 </Grid>
-                : <Grid>₹ {dress.price}</Grid>
+                : <Grid>₹ {dress.d_price}</Grid>
         }
         <Grid container spacing={2}>
             <Grid item>
@@ -270,7 +268,7 @@ const Products = () => {
                     <TextField label="Search for dress types" 
                     value={search} onChange={handleChange}
                     onKeyDown={handleKeyDown}
-                    placeholder="Enter any dress type like denim .."fullWidth autoFocus />
+                    placeholder="Enter any dress type like denim .." fullWidth autoFocus />
                 </Grid>
             </Grid>
             

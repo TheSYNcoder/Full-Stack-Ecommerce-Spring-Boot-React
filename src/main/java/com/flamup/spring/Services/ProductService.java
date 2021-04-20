@@ -24,21 +24,21 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product getByDressType( String dresstype ){
-        return productRepository.findProductByDresstype(dresstype)
-                .orElseThrow(() -> new IllegalStateException("Dress not found"));
-    }
+//    public Product getByDressType( String dresstype ){
+//        return productRepository.findProductByB_dresstype(dresstype)
+//                .orElseThrow(() -> new IllegalStateException("Dress not found"));
+//    }
 
     public List<Product> getProductsByDressType( String dresstype){
-        return productRepository.findProductsByDresstype(dresstype);
+        return productRepository.findProductsByB_Dresstype(dresstype);
     }
 
 
     public HashMap<String, Object> getProductsBySex(String sex, Integer pageSize, Integer page, Map<Boolean, Long> countBySex){
 
         Pageable paging = PageRequest.of(page , pageSize);
-        Page<Product> prods = productRepository.findProductBySex(sex, paging);
-        List<Product> newProds = productRepository.findProductsByArrivalAndSex("new" ,sex);
+        Page<Product> prods = productRepository.findProductByA_sex(sex, paging);
+        List<Product> newProds = productRepository.findProductsByE_arrivalAndA_sex("new" ,sex);
         Integer totalPages = prods.getTotalPages();
         List<Product> products = prods.getContent();
         products = rearrange(products, countBySex, newProds);

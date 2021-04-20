@@ -1,7 +1,6 @@
 package com.flamup.spring.Models;
 
 
-import com.flamup.spring.auth.ApplicationUser.Gender;
 import lombok.*;
 
 

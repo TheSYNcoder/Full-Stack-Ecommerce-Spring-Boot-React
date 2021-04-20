@@ -88,11 +88,11 @@ public class CartService {
             hs.put("products" ,  orders);
             int price =0;
             for ( OrderItem order : orders ){
-                if ( order.getProduct().getArrival().toLowerCase(Locale.ROOT).equals("old")){
-                    price += order.getQuantity() * order.getProduct().getDiscount();
+                if ( order.getProduct().getE_arrival().toLowerCase(Locale.ROOT).equals("old")){
+                    price += order.getQuantity() * order.getProduct().getF_discount();
                 }
                 else {
-                    price += order.getQuantity() * sanitizePrice(order.getProduct().getPrice());
+                    price += order.getQuantity() * sanitizePrice(order.getProduct().getD_price());
                 }
             }
             hs.put("total", price);

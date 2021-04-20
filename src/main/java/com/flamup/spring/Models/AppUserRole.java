@@ -1,4 +1,4 @@
-package com.flamup.spring.auth;
+package com.flamup.spring.Models;
 
 
 public enum AppUserRole {

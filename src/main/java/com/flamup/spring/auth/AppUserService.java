@@ -1,5 +1,7 @@
 package com.flamup.spring.auth;
 
+import com.flamup.spring.Models.ApplicationUser;
+import com.flamup.spring.Repositories.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,7 +39,7 @@ public class AppUserService implements UserDetailsService {
 
     public String signupUser( ApplicationUser applicationUser){
         boolean userExists = applicationUserRepository
-                .findApplicationUsersByEmail(applicationUser.getEmail())
+                .findApplicationUsersByEmail(applicationUser.getUsername())
                 .isPresent();
 
         if ( userExists ){
@@ -53,24 +55,5 @@ public class AppUserService implements UserDetailsService {
     }
 
 
-    public ApplicationUser  loginUser(ApplicationUser applicationUser){
 
-        System.out.println("loginUser" + applicationUser);
-        System.out.println("Helllllooooooo");
-
-
-        Optional<ApplicationUser> appUser = applicationUserRepository
-                .findApplicationUsersByEmail(applicationUser.getEmail());
-
-
-        if (appUser.isPresent()){
-            throw  new IllegalStateException("Email does not exist");
-        }
-        ApplicationUser oldAppUser = appUser.get();
-        if (bCryptPasswordEncoder.matches(applicationUser.getPassword(), oldAppUser.getPassword())){
-            return oldAppUser;
-        }
-        else
-        throw new IllegalStateException("Password is incorrect");
-    }
 }

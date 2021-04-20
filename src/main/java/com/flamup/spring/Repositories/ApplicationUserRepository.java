@@ -1,5 +1,6 @@
-package com.flamup.spring.auth;
+package com.flamup.spring.Repositories;
 
+import com.flamup.spring.Models.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

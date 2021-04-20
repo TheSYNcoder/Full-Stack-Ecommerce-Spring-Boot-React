@@ -16,18 +16,17 @@ import java.util.Optional;
 @Transactional
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    Optional<Product> findProductByDresstype(String dresstype);
 
     Optional<Product> findProductById( Long id);
 
-    @Query("select p from Product p where LOWER(p.dresstype) LIKE LOWER(CONCAT('%', :type, '%'))")
-    List<Product> findProductsByDresstype(@Param("type") String type);
+    @Query("select p from Product p where LOWER(p.b_dresstype) LIKE LOWER(CONCAT('%', :type, '%'))")
+    List<Product> findProductsByB_Dresstype(@Param("type") String type);
 
-    @Query(value = "select p from Product p where LOWER(p.sex)=lower(:sex) order by p.arrival desc ")
-    Page<Product> findProductBySex(@Param("sex") String sex, Pageable paging);
+    @Query(value = "select p from Product p where LOWER(p.a_sex)=lower(:sex) order by p.e_arrival desc ")
+    Page<Product> findProductByA_sex(@Param("sex") String sex, Pageable paging);
 
-    @Query(value = "select p from Product p where LOWER(p.arrival)=LOWER(:arrival) and LOWER(p.sex)=LOWER(:sex)")
-    List<Product> findProductsByArrivalAndSex(@Param("arrival") String arrival, @Param("sex") String sex);
+    @Query(value = "select p from Product p where LOWER(p.e_arrival)=LOWER(:arrival) and LOWER(p.a_sex)=LOWER(:sex)")
+    List<Product> findProductsByE_arrivalAndA_sex(@Param("arrival") String arrival, @Param("sex") String sex);
 
 
 }

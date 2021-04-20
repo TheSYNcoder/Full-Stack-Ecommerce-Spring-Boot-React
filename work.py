@@ -6,7 +6,7 @@ f_content = json.loads(open('female-data.json','r').read())
 
 
 obj = {
-    'sex':[],
+    'a_sex':[],
     'dresstype':[],
     'image':[],
     'price':[],
@@ -21,7 +21,7 @@ def sanitizePrice(price):
 
 
 for content in men_content:
-    temp = pd.DataFrame( { 'sex' : ['MALE'] ,
+    temp = pd.DataFrame( { 'a_sex' : ['MALE'] ,
     'dresstype' :[content['dressType']],
     'image'  : [content['image']],
     'price' : [content['price']],
@@ -34,7 +34,7 @@ for content in men_content:
 
 
 for content in f_content:
-    temp = pd.DataFrame( { 'sex' : ['FEMALE'] ,
+    temp = pd.DataFrame( { 'a_sex' : ['FEMALE'] ,
     'dresstype' :[content['dressType']],
     'image'  : [content['image']],
     'price' : [content['price']],

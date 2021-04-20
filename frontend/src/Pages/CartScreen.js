@@ -18,6 +18,7 @@ import { withRouter } from "react-router";
 const useStyles = makeStyles({
     table: {
         minWidth: 650,
+        marginTop :"3em"
     },
 });
 
@@ -112,13 +113,13 @@ function BasicTable() {
                     {products && products.map((row,i) => {
                         const display = row.quantity <= 0;
                         return (
-                        <TableRow key={row.name} >
+                        <TableRow key={row.b_dresstype} >
                             <TableCell component="th" scope="row">
-                                {row.product.dresstype}
+                                {row.product.b_dresstype}
                             </TableCell>
                             <TableCell align="right">{row.quantity}</TableCell>
-                            <TableCell align="right">{row.product.arrival.toLowerCase() === 'old' ? 
-                            'Rs.' + row.product.discount : row.product.price }</TableCell>
+                            <TableCell align="right">{row.product.e_arrival.toLowerCase() === 'old' ?
+                            'Rs.' + row.product.f_discount : row.product.d_price }</TableCell>
                             <TableCell align="right">
                                 <ButtonGroup>
                                     <Button onClick={() => handleInc(i, row.id)}>+</Button>
