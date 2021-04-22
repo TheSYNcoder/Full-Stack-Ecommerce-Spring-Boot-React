@@ -22,7 +22,7 @@ services:
 
   flamup:
     build: ./
-    image: "thesyncoder/flamup:0.0.1"
+    image: "thesyncoder/flamup:0.0.2"
     container_name: flamup
     environment:
       - DB_SERVER:db
@@ -30,7 +30,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - 8080:8080 # Forward the exposed port 8080 on the container to port 8080 on the host machine
+      - 8081:8081 # Forward the exposed port 8080 on the container to port 8080 on the host machine
 
     depends_on:
       - db
