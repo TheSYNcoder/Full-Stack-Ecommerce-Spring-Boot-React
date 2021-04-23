@@ -11,9 +11,9 @@ server:
 
 spring:
   datasource:
-    password: papai120499
+    password:
     url: jdbc:postgresql://localhost:5432/flamup
-    username: shuvayan
+    username:
 
   jpa:
     hibernate:
