@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img width="460" height="300" src="https://github.com/TheSYNcoder/Full-Stack-Ecommerce-Spring-Boot-React/blob/https/logof.png">
+  <img  src="https://github.com/TheSYNcoder/Full-Stack-Ecommerce-Spring-Boot-React/blob/https/logof.png">
 </p>
 
 This is a full stack web application made with spring boot and ReactJs in the frontend. Relevant blog articles on this are
